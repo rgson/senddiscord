@@ -10,6 +10,8 @@ import yaml
 
 SCRIPT_NAME = "senddiscord"
 
+MAX_ATTACHMENTS = 10  # External limitation
+
 CONFIG_DIR = os.environ.get("XDG_CONFIG_HOME", os.path.expanduser("~/.config"))
 CONFIG_FILE = f"{CONFIG_DIR}/{SCRIPT_NAME}.yaml"
 
@@ -26,6 +28,12 @@ parser = argparse.ArgumentParser(
 )
 parser.add_argument("channel", type=int, help="the output channel's ID")
 parser.add_argument("--token", help="sets the Discord auth token")
+parser.add_argument(
+    "--attach",
+    help="attaches a file to the message (repeatable)",
+    action="append",
+    default=[],
+)
 args = parser.parse_args()
 
 # Identify the token
@@ -37,6 +45,15 @@ if not token:
         file=sys.stderr,
     )
     sys.exit(1)
+
+# Check attachments
+if len(args.attach) > MAX_ATTACHMENTS:
+    print(
+        f"Too many attachments. Cannot send more than {MAX_ATTACHMENTS}.",
+        file=sys.stderr,
+    )
+    sys.exit(1)
+
 
 # Configure the Discord client
 client = discord.Client()
@@ -50,7 +67,10 @@ client.allowed_mentions = discord.AllowedMentions(
 @client.event
 async def on_ready():
     channel = client.get_channel(args.channel)
-    await channel.send(sys.stdin.read())
+    await channel.send(
+        content=sys.stdin.read(),
+        files=[discord.File(file) for file in args.attach],
+    )
     await client.close()
 
 
