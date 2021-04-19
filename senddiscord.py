@@ -27,6 +27,11 @@ if not token:
 
 client = discord.Client()
 
+# Mentions are not properly supported. Avoid unintentional mentions.
+client.allowed_mentions = discord.AllowedMentions(
+    everyone=False, users=False, roles=False
+)
+
 
 @client.event
 async def on_ready():
