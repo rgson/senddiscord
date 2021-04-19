@@ -36,6 +36,9 @@ token within. For example:
 ```yaml
 token: qfRhyfLk5olJHPsVaRGIVGGs.N7MdDP.v8O7BVuyGVtrhrnwjY5W3S-pn4C
 ```
+It is recommended that you limit the file permissions such that other users
+cannot access your token. Example: `chmod 600 ~/.config/senddiscord.yaml`.
 
 Alternatively, you can set the token with the `--token` option or with an
-environment variable named `DISCORD_TOKEN`.
+environment variable named `DISCORD_TOKEN`. Beware of the security implications
+of passing secrets on the command-line.
