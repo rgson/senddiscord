@@ -22,23 +22,38 @@ senddiscord -h
 
 1. Install the Python dependencies listed in [requirements.txt].
 2. Install/symlink `senddiscord.py` as `senddiscord` somewhere on your `PATH`.
+3. [Create a Discord bot](https://discordpy.readthedocs.io/en/stable/discord.html)
+4. [Configure](#configuration) `senddiscord` to use your bot's auth token.
 
-### Configuration
 
-A Discord bot auth token is required.
+## Configuration
 
-1. [Create a Discord bot](https://discordpy.readthedocs.io/en/stable/discord.html)
-2. Configure `senddiscord` to use your token.
+Configurations are read from `~/.config/senddiscord.yaml` (unless you've
+set `XDG_CONFIG_HOME` to point elsewhere).
 
-Configuration is read from `~/.config/senddiscord.yaml` (unless you've
-configured `XDG_CONFIG_HOME` to point elsewhere). Create the file and place your
-token within. For example:
+### Token
+
+Your auth token can be configured using the `token` configuration key.
+
+Example:
 ```yaml
 token: qfRhyfLk5olJHPsVaRGIVGGs.N7MdDP.v8O7BVuyGVtrhrnwjY5W3S-pn4C
 ```
-It is recommended that you limit the file permissions such that other users
-cannot access your token. Example: `chmod 600 ~/.config/senddiscord.yaml`.
+
+You are recommended to limit the file permissions such that other users cannot
+access your token. Example: `chmod 600 ~/.config/senddiscord.yaml`.
 
 Alternatively, you can set the token with the `--token` option or with an
 environment variable named `DISCORD_TOKEN`. Beware of the security implications
 of passing secrets on the command-line.
+
+### Channel aliases
+
+You may configure mnemonic channel aliases to use in place of channel IDs.
+
+Example:
+```yaml
+channel_aliases:
+  general: 123456789123456789
+  foobar: 987654321987654321
+```
