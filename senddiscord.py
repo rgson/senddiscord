@@ -22,11 +22,19 @@ try:
 except FileNotFoundError:
     config = {}
 
+channel_aliases = config.get("channel_aliases", {})
+
 # Read command-line arguments
+def channel(value):
+    return channel_aliases.get(value) or int(value)
+
+
 parser = argparse.ArgumentParser(
     description="Send things from your terminal to Discord"
 )
-parser.add_argument("channel", type=int, help="the output channel's ID")
+parser.add_argument(
+    "channel", type=channel, help="the output channel (ID or alias)"
+)
 parser.add_argument("--token", help="sets the Discord auth token")
 parser.add_argument(
     "--attach",
